@@ -64,7 +64,7 @@ func (cfg *Config) SetUser(userName string) error {
 	}
 
 	// Write the marshaled JSON to the config file
-	file, err := os.OpenFile(configFilePath, os.O_RDWR, 0644)
+	file, err := os.OpenFile(configFilePath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to open config file for writing: %v", err)
 	}
