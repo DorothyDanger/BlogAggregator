@@ -43,6 +43,7 @@ func main() {
 	cmds.register("register", handlerRegister)
 	cmds.register("reset", handlerReset)
 	cmds.register("users", handlerGetUsers)
+	cmds.register("agg", handlerAgg)
 	// Use os.Args to get the command-line arguments passed in by the user
 	// If <2 print an error to the terminal and exit. 1st is command name, 2nd is input
 	if len(os.Args) < 2 {
