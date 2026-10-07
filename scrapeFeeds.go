@@ -2,7 +2,13 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
+	"strings"
+	"time"
+
+	"github.com/DorothyDanger/BlogAggregator/internal/database"
+	"github.com/google/uuid"
 )
 
 // This functions exists to be called by Agg.
@@ -28,14 +34,34 @@ func scrapeFeed(s *state) error {
 		return fmt.Errorf("Error fetching feed: %v\n", err)
 	}
 
-	fmt.Printf("Feed Title: %s\n", rss.Channel.Title)
-	fmt.Printf("Feed Link: %s\n", rss.Channel.Link)
-	fmt.Printf("Feed Description: %s\n", rss.Channel.Description)
 	for _, item := range rss.Channel.Item {
-		fmt.Printf("\nItem Title: %s\n", item.Title)
-		fmt.Printf("Item Link: %s\n", item.Link)
-		fmt.Printf("Item Description: %s\n", item.Description)
-		fmt.Printf("Item PubDate: %s\n", item.PubDate)
+		pubDate := sql.NullTime{}
+		if t, err := time.Parse(time.RFC1123Z, item.PubDate); err == nil {
+			pubDate = sql.NullTime{
+				Time:  t,
+				Valid: true,
+			}
+		}
+
+		postParams := database.CreatePostParams{
+			ID:          uuid.New(),
+			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
+			Title:       item.Title,
+			Url:         item.Link,
+			Description: item.Description,
+			PublishedAt: pubDate,
+			FeedID:      feed.ID,
+		}
+		_, err := s.db.CreatePost(ctx, postParams)
+		if err != nil {
+			if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
+				continue
+			}
+			fmt.Printf("Error: %v", err)
+			continue
+		}
+		fmt.Printf("Added post to the database for user")
 	}
 	return nil
 }

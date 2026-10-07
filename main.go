@@ -49,6 +49,7 @@ func main() {
 	cmds.register("follow", middlewareLoggedIn(handlerFollowFeed))
 	cmds.register("following", middlewareLoggedIn(handlerPrintFollowedFeeds))
 	cmds.register("unfollow", middlewareLoggedIn(handlerUnfollow))
+	cmds.register("browse", middlewareLoggedIn(handlerBrowse))
 	// Use os.Args to get the command-line arguments passed in by the user
 	// If <2 print an error to the terminal and exit. 1st is command name, 2nd is input
 	if len(os.Args) < 2 {
