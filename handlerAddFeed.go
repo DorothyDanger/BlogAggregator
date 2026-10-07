@@ -52,5 +52,7 @@ func handlerAddFeed(s *state, cmd command) error {
 	fmt.Printf("URL: %s\n", feedParams.Url)
 	fmt.Printf("User ID: %s\n", feedParams.UserID)
 
+	// create a new feed follow record for the current user
+	handlerFollowFeed(s, command{Args: []string{url}})
 	return nil
 }

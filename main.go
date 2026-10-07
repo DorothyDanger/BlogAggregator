@@ -46,6 +46,8 @@ func main() {
 	cmds.register("agg", handlerAgg)
 	cmds.register("addfeed", handlerAddFeed)
 	cmds.register("feeds", handlerListFeeds)
+	cmds.register("follow", handlerFollowFeed)
+	cmds.register("following", handlerPrintFollowedFeeds)
 	// Use os.Args to get the command-line arguments passed in by the user
 	// If <2 print an error to the terminal and exit. 1st is command name, 2nd is input
 	if len(os.Args) < 2 {
