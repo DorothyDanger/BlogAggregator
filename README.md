@@ -3,15 +3,15 @@ This is a guided learning project done on boot.dev
 
 You will need Postgres and Go installed to run this program.
 
-Install gator with "go install ..."
+Install gator with go install github.com/DorothyDanger/BlogAggregator@latest
 
 Create a .gatorconfig.json file in your home directory with the structure:
-
+```
 {
     "db_url": "postgres://username:@localhost:5432/database?sslmode=disable"
     "current_user_name": "username"
 }
-
+```
 Change your directory to /sql/schema and run the command:
 goose postgres <connection_string> up
 With the connection string being that used in the config file.
