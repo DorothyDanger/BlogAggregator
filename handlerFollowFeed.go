@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerFollowFeed(s *state, cmd command) error {
+func handlerFollowFeed(s *state, cmd command, user database.User) error {
 	// Takes a single URL arg and creates a new feed follow record for the current user
 	// Print the name of the feed and the current user once the record is created
 	if len(cmd.Args) < 1 {
@@ -20,12 +20,6 @@ func handlerFollowFeed(s *state, cmd command) error {
 	feed, err := s.db.GetFeedFromURL(context.Background(), feedURL)
 	if err != nil {
 		return fmt.Errorf("Failed to get feed name from URL: %s\n Error: %v", feedURL, err)
-	}
-
-	// Get the current user ID from the database
-	user, err := s.db.GetUser(context.Background(), s.config.Current_User_Name)
-	if err != nil {
-		return fmt.Errorf("failed to get current user: %v", err)
 	}
 
 	// Create a new record in the database

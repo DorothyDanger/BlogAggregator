@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	// takes 2 args: name of the feed, url of the feed
 	// get current user from the database and connect the feed to that user.
 	// print out the fields of the new feed record if successful
@@ -20,12 +20,6 @@ func handlerAddFeed(s *state, cmd command) error {
 
 	name := cmd.Args[0]
 	url := cmd.Args[1]
-
-	// Get the current user ID from the database
-	user, err := s.db.GetUser(context.Background(), s.config.Current_User_Name)
-	if err != nil {
-		return fmt.Errorf("failed to get current user: %v", err)
-	}
 
 	// Create a new feed in the database
 	feedParams := database.AddFeedParams{
@@ -37,7 +31,7 @@ func handlerAddFeed(s *state, cmd command) error {
 		UserID:    user.ID,
 	}
 
-	_, err = s.db.AddFeed(context.Background(), feedParams)
+	_, err := s.db.AddFeed(context.Background(), feedParams)
 	if err != nil {
 		//return fmt.Errorf("failed to add feed: %v", err)
 		os.Exit(1)
@@ -53,6 +47,6 @@ func handlerAddFeed(s *state, cmd command) error {
 	fmt.Printf("User ID: %s\n", feedParams.UserID)
 
 	// create a new feed follow record for the current user
-	handlerFollowFeed(s, command{Args: []string{url}})
+	handlerFollowFeed(s, command{Args: []string{url}}, user)
 	return nil
 }

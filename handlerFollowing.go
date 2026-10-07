@@ -3,15 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/DorothyDanger/BlogAggregator/internal/database"
 )
 
-func handlerPrintFollowedFeeds(s *state, cmd command) error {
+func handlerPrintFollowedFeeds(s *state, cmd command, user database.User) error {
 	// Function to print all the names of the feeds that the current user is following
 	// No args are needed
-	user, err := s.db.GetUser(context.Background(), s.config.Current_User_Name)
-	if err != nil {
-		return fmt.Errorf("failed to get current user for look up: %v", err)
-	}
 	userID := user.ID
 
 	feeds, err := s.db.GetFeedFollowsForUser(context.Background(), userID)
