@@ -18,7 +18,7 @@ With the connection string being that used in the config file.
 
 Gator should be up and running after this.
 
-The commands available to you are in the form "gator <command>":
+The commands available to you are in the form `gator <command>`:
 
     # login <username>
         Login to your account if it exists in the database
