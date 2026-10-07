@@ -27,12 +27,12 @@ func handlerBrowse(s *state, cmd command, user database.User) error {
 	if err != nil {
 		return fmt.Errorf("Error fetching posts: %v", err)
 	}
-	fmt.Printf("Found %d posts for user %s", len(posts), user.Name)
+	fmt.Printf("Found %d posts for user %s\n", len(posts), user.Name)
 	for _, post := range posts {
 		fmt.Printf("Title: %s\n", post.Title)
 		fmt.Printf("Description: %v\n", post.Description)
 		fmt.Printf("Link: %s\n", post.Url)
-		fmt.Printf("Published at: %s\n", post.PublishedAt.Time)
+		fmt.Printf("Published at: %s\n\n", post.PublishedAt.Time)
 	}
 	return nil
 }
